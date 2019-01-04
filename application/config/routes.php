@@ -2,6 +2,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['login']     = 'auth';
+$route['forgot']    = 'auth/forgot';
+$route['logout']    = 'auth/logout';
 $route['daftar']    = 'register';
 
 $route['default_controller'] = 'auth';

@@ -21,5 +21,9 @@
             <td></td>
             <td><input type="submit" name="submit" value="login"></td>
         </tr>
+        <tr>
+            <td></td>
+            <td><a href="<?= site_url('forgot')?>">Lupa Password</a></td>
+        </tr>
     </table>
 <?= form_close(); ?>
