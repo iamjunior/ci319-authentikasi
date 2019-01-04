@@ -2,32 +2,7 @@
 
 class RegisterModel extends CI_Model
 {
-    private $_table = 'tbu_user';
-
-    public function rules()
-    {
-        return [
-            ['field' => 'username',
-            'label' => 'Username',
-            'rules' => 'required|is_unique[tbu_user.username]'],
-
-            ['field' => 'email',
-            'label' => 'Email',
-            'rules' => 'required|is_unique[tbu_user.email]'],
-            
-            ['field' => 'password',
-            'label' => 'Password',
-            'rules' => 'required'],
-
-            ['field' => 'password2',
-            'label' => 'Konfirmasi Password',
-            'rules' => 'required|matches[password]'],
-
-            ['field' => 'confirm',
-            'label' => 'Konfirmasi Kode',
-            'rules' => 'required|callback_confirmCode']
-        ];
-    }
+    private $_tb = 'tbu_user';
 
     public function insertRegister()
     {
@@ -47,11 +22,12 @@ class RegisterModel extends CI_Model
             'user_create'   => '0'
         );
 
-        return $this->db->insert('tbu_user', $data);
+        return $this->db->insert($this->_tb, $data);
     }
 
     public function confirmCode()
 	{
+		date_default_timezone_set("Asia/Jakarta");
 		$y = date('y');
 		$m = date('m');
 		$d = date('d');
@@ -66,12 +42,8 @@ class RegisterModel extends CI_Model
 		$c3 = $c2 + $i;
 
 		$code = $c1.''.$c2.''.$c3;
-
-        if($this->input->post('confirm') != $code) {
-            $this->form_validation->set_message('confirmRoot', 'confirm code is incorrect');
-            return false;
-        }
-
-        return true;
+        
+        return $code;
+        
 	}
 }

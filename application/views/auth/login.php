@@ -1,21 +1,24 @@
 <h2>Login</h2>
 
 <?= form_open('login') ?>
-    <label for="">email</label>
-    <?= form_error('email'); ?>
-    <input type="email" name="email" value="<?=set_value('email') ?>"> <br>
-
-    <label for="">password</label>
-    <?= form_error('password'); ?>
-    <input type="password" name="password"> <br>
-
-    <input type="submit" name="submit" value="login">
+    <table>
+        <tr>
+            <td><label for="">username</label></td>
+            <td>
+                <?= form_error('username'); ?>
+                <input type="username" name="username" required value="<?=set_value('username') ?>">
+            </td>
+        </tr>
+        <tr>
+            <td><label for="">password</label></td>
+            <td>
+                <?= form_error('password'); ?>
+                <input type="password" required name="password">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" name="submit" value="login"></td>
+        </tr>
+    </table>
 <?= form_close(); ?>
-
-<?php
-$enc = encrypt_my('1');
-$dec = decrypt_my($enc);
-
-echo $enc.'<br/>';
-echo $dec;
-?>
