@@ -295,7 +295,8 @@ class CI_Security {
 	 */
 	public function csrf_show_error()
 	{
-		show_error('The action you have requested is not allowed.', 403);
+		// show_error('The action you have requested is not allowed.', 403);
+		show_error('Opps.. Sepertinya Ada sedikit kesalahan. <a href ="javascript:history.back()"> <strong>BACK..!!</strong> </ a>', 403);
 	}
 
 	// --------------------------------------------------------------------

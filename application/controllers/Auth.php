@@ -24,17 +24,21 @@ class Auth extends CI_Controller {
 	
 	public function index()
 	{
-		$this->load->view('auth/login');
-	}
+        if(isset($_SESSION['loggedIn'])){
+            redirect('home');
+        }
 
-	public function getLogin()
-	{
 		$this->form_validation->set_rules($this->rules());
 
         if ($this->form_validation->run() === false) {
             $this->load->view('auth/login');
         } else {
-			echo 'Yey Berhasil';
+            $auth = $this->auth->getUser('username', $this->input->post('username'));
+            
+            $_SESSION['userId']     = $auth['id_user'];
+            $_SESSION['loggedIn']   = true;
+            
+            redirect('home');
         }
 	}
 

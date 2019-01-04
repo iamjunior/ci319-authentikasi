@@ -1,5 +1,6 @@
 <h2>Login</h2>
 
+
 <?= form_open('login') ?>
     <table>
         <tr>

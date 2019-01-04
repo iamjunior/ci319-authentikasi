@@ -7,9 +7,13 @@ class AuthModel extends CI_Model
 
     public function getUser($key, $value)
     {
-        $q = $this->db->get_where($this->_tb, array($key=>$value));
-        if(!empty($q->row_array())) {
-            return $q->row_array();
+        $wrarray = array(
+            $key            => $value,
+            'status_user'   => 'Y');
+
+        $q = $this->db->get_where($this->_tb, $wrarray);
+            if(!empty($q->row_array())) {
+                return $q->row_array();
         }
 
         return false;

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$route['login']     = 'auth/getLogin';
+$route['login']     = 'auth';
 $route['daftar']    = 'register';
 
 $route['default_controller'] = 'auth';
