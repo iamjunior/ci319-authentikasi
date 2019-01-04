@@ -16,17 +16,14 @@ class Register extends CI_Controller {
 
 	public function register()
     {
-        $this->form_validation->set_rules('username', 'Username', 'required|is_unique[tbu_user.username]');
-        $this->form_validation->set_rules('email', 'Email', 'required|is_unique[tbu_user.email]');
-        $this->form_validation->set_rules('password', 'Password', 'required');
-        $this->form_validation->set_rules('password2', 'Konfirmasi Password', 'required|matches[password]');
-        $this->form_validation->set_rules('confirm', 'Konfirmasi Kode', 'required|callback_confirmRoot');
+        
+		$this->form_validation->set_rules($this->register->rules());
 
         if ($this->form_validation->run() === false) {
 			$d['code']	= $this->confirmCode();
             $this->load->view('auth/register',$d);
         } else {
-            // $this->register->insertRegister();//save user
+            $this->register->insertRegister();//save user
             // $this->send_email_verification($this->input->post('email'), $_SESSION['token']); //verifikasi email
 			// redirect('login');
 			echo 'Yey Berhasil';
