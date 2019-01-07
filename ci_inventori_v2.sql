@@ -11,40 +11,11 @@
  Target Server Version : 100132
  File Encoding         : 65001
 
- Date: 04/01/2019 19:14:25
+ Date: 07/01/2019 20:56:08
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for tba_attempt
--- ----------------------------
-DROP TABLE IF EXISTS `tba_attempt`;
-CREATE TABLE `tba_attempt`  (
-  `id_attempt` int(11) NOT NULL AUTO_INCREMENT,
-  `ip_client` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
-  `hostname_client` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
-  `day_attempt` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-  `time_attempt` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-  `total_attempt` int(255) NULL DEFAULT NULL,
-  `status_attempt` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
-  PRIMARY KEY (`id_attempt`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
-
--- ----------------------------
--- Table structure for tba_attempt_byuser
--- ----------------------------
-DROP TABLE IF EXISTS `tba_attempt_byuser`;
-CREATE TABLE `tba_attempt_byuser`  (
-  `id_attemptuser` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
-  `time_attempt` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `day_attempt` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `total_attempt` int(11) NULL DEFAULT NULL,
-  `status_attempt` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
-  PRIMARY KEY (`id_attemptuser`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for tbm_cabang
@@ -82,13 +53,15 @@ CREATE TABLE `tbm_email`  (
   `status_aktif` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT 'Y',
   `notes_email` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
   PRIMARY KEY (`id_email`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbm_email
 -- ----------------------------
-INSERT INTO `tbm_email` VALUES (1, 'OSS - ASTRINDO', ' smtp.mailtrap.io', ' 047b67b78ee8cd', ' 4950e0e467f680', '465', 'Y', 'Setting Astrindo:\r\nsmtp_host => \'mail.astrindotour.co.id\',\r\nsmtp_user => \'permit@astrindotour.co.id\', \r\nsmtp_pass => \'k0hkr60sim\',\r\nsmtp_port => \'465\',\r\n\r\nsmtp_host => \'mail.astrindotour.co.id\',\r\nsmtp_user => \'permit@astrindotour.co.id\', \r\nsmtp_pass => \'k0hkr60sim\',\r\nsmtp_port => \'587\',\r\n\r\nSetting Google:\r\nsmtp_host => \'smtp.gmail.com\',\r\nsmtp_user => \'permit.astrindo@gmail.com\', \r\nsmtp_pass => \'Astri443322\',\r\nsmtp_port => \'465\',                  ');
-INSERT INTO `tbm_email` VALUES (2, NULL, NULL, 'programmer@astrindotour.co.id', NULL, NULL, 'Y', NULL);
+INSERT INTO `tbm_email` VALUES (1, 'INVENTORI - ASTRINDO', ' smtp.mailtrap.io', ' 047b67b78ee8cd', ' 4950e0e467f680', '2525', 'W', 'Setting Astrindo:\r\nsmtp_host => \'mail.astrindotour.co.id\',\r\nsmtp_user => \'permit@astrindotour.co.id\', \r\nsmtp_pass => \'k0hkr60sim\',\r\nsmtp_port => \'465\',\r\n\r\nsmtp_host => \'mail.astrindotour.co.id\',\r\nsmtp_user => \'permit@astrindotour.co.id\', \r\nsmtp_pass => \'k0hkr60sim\',\r\nsmtp_port => \'587\',\r\n\r\nSetting Google:\r\nsmtp_host => \'smtp.gmail.com\',\r\nsmtp_user => \'permit.astrindo@gmail.com\', \r\nsmtp_pass => \'Astri443322\',\r\nsmtp_port => \'465\',                  ');
+INSERT INTO `tbm_email` VALUES (2, 'INVENTORI - ASTRINDO', 'mail.astrindotour.co.id', 'permit@astrindotour.co.id', 'k0hkr60sim', '465', 'W', NULL);
+INSERT INTO `tbm_email` VALUES (3, 'INVENTORI - ASTRINDO', 'smtp.gmail.com', 'permit.astrindo@gmail.com', 'Astri443322', '465', 'Y', NULL);
+INSERT INTO `tbm_email` VALUES (4, NULL, NULL, 'programmer@astrindotour.co.id', NULL, NULL, 'Y', NULL);
 
 -- ----------------------------
 -- Table structure for tbm_level
@@ -100,6 +73,25 @@ CREATE TABLE `tbm_level`  (
   `nama_level` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   PRIMARY KEY (`id_level`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for tbu_attempt
+-- ----------------------------
+DROP TABLE IF EXISTS `tbu_attempt`;
+CREATE TABLE `tbu_attempt`  (
+  `id_attempt` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `time_attempt` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `date_attempt` datetime(0) NULL DEFAULT NULL,
+  `total_attempt` int(11) NULL DEFAULT 0,
+  `status_attempt` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT 'OPEN',
+  PRIMARY KEY (`id_attempt`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of tbu_attempt
+-- ----------------------------
+INSERT INTO `tbu_attempt` VALUES (1, 'admin', '2019-01-07 20:09:30', '2019-01-07 00:00:00', 3, 'BLOCKED');
 
 -- ----------------------------
 -- Table structure for tbu_group
@@ -146,12 +138,12 @@ CREATE TABLE `tbu_user`  (
   `user_create` int(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id_user`, `status_user`) USING BTREE,
   UNIQUE INDEX `id_user`(`id_user`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbu_user
 -- ----------------------------
-INSERT INTO `tbu_user` VALUES (1, 'admin', '$2y$10$08rOZqVCExpCXTpGP.ORKeSJlB0oW3YtF0fXIVdWzzqgD6HpEg6fq', 'Y', 'programmer@astrindotour.co.id', 'T3cSdCtz2a6XBiZY', 1, 1, 0, '2019-01-04 10:30:56', 0);
+INSERT INTO `tbu_user` VALUES (9, 'admin', '$2y$10$MwNCh9IM3JYG46uFvK/i0Oy0QPKDuf4axm/nZAuWRbQCKqhqxkURO', 'Y', 'programmer@astrindotour.co.id', 'kcuj5KyO3zwExJ7C', 1, 1, 0, '2019-01-07 18:43:24', 0);
 
 -- ----------------------------
 -- Table structure for tbu_user_profile

@@ -6,6 +6,7 @@ class Auth extends CI_Controller {
         parent::__construct();
 		date_default_timezone_set("Asia/Jakarta");
 		$this->load->model('AuthModel','auth');
+		$this->load->model('AttemptsModel','attempt');
 		$this->load->model('EmailModel','mail');
 	}
 
@@ -15,7 +16,7 @@ class Auth extends CI_Controller {
             return [
                 ['field' => 'username',
                 'label' => 'Username',
-                'rules' => 'required|callback_checkUsername|callback_checkRole'],
+                'rules' => 'required|callback_checkUsername|callback_checkRole|callback_checkBlock'],
     
                 ['field' => 'password',
                 'label' => 'Password',
@@ -128,6 +129,7 @@ class Auth extends CI_Controller {
 
         if(!$this->auth->checkPassword($user['username'], $password)) {
             $this->form_validation->set_message('checkPassword', 'password is incorrect');
+            $this->attempt->getFail();//memanggail fungsi fail untuk blok user naantinya
             return false;
         }
 
@@ -135,6 +137,18 @@ class Auth extends CI_Controller {
 
     }
     
+    public function checkBlock()
+    {
+        $find = $this->attempt->find('BLOCKED')->first_row();
+        
+        if ($find) {
+            $this->form_validation->set_message('checkBlock', 'username is blocked');
+            return false;
+        }
+
+        return true;
+    }
+
     public function logout()
     {
         $this->session->sess_destroy();
