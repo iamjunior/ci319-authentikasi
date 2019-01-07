@@ -15,7 +15,7 @@ class Auth extends CI_Controller {
             return [
                 ['field' => 'username',
                 'label' => 'Username',
-                'rules' => 'required|callback_checkUsername'],
+                'rules' => 'required|callback_checkUsername|callback_checkRole'],
     
                 ['field' => 'password',
                 'label' => 'Password',
@@ -23,7 +23,6 @@ class Auth extends CI_Controller {
     
             ];
         }else{
-            
             return [
                 ['field' => 'email',
                 'label' => 'email',
@@ -53,17 +52,43 @@ class Auth extends CI_Controller {
         }
 	}
 
-	public function forgot(){
+	public function forgot(){//Kirim konfirmasi email forgot
         $this->form_validation->set_rules($this->rules('2'));
+        $this->load->model('EmailModel');
 
         if ($this->form_validation->run() === false) {
-            $dt['mail'] = $this->mail->getMail();
+            $dt['mail'] = $this->EmailModel->getFrom();
             $this->load->view('auth/forgot',$dt);
         } else {
-            $this->mail->getForgot($this->input->post('email'));
+            $this->auth->getMailForgot($this->input->post('email'));
             echo 'Kode Konfirmasi Sudah dikirimkan Ke Email anda';
         }
     }
+
+    public function resetPage(){
+        $user = $this->auth->getTbUser(array('id_user'=> decrypt_my($this->uri->segment(2)),'token_code'=>$this->uri->segment(3)))->num_rows();
+        if(!$user){
+            echo 'Halaman Ini Kedaluarsa';
+        }else{
+            $this->load->view('auth/reset-page');
+        }
+    }
+
+    public function resetPassword(){
+        $user = $this->auth->getTbUser(array('id_user'=> decrypt_my($this->input->post('id')),'token_code'=>$this->input->post('token')))->first_row();
+        if(!$user){
+            redirect($_SERVER['HTTP_REFERER']);
+        }else{
+            $change = $this->auth->getChangePass();
+            if($change){//setelah password berhasil di ubah, otomatis token ikut diubah
+                $this->auth->getChangeToken($user->email);
+                echo 'berhasil';
+            }else{
+                echo 'Gagal';
+            }
+        }
+    }
+
     public function checkUsername($username)
     {
         if (!$this->auth->getUser('username', $username)) {
@@ -78,6 +103,19 @@ class Auth extends CI_Controller {
     {
         if (!$this->auth->getUser('email', $email)) {
             $this->form_validation->set_message('checkEmail', 'email is not on database');
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public function checkRole($username)
+    {
+        $user = $this->auth->getUser('username',$this->input->post('username'));
+
+        if (($user['status_user'] == 'W') or ($user['status_user'] == 'N')) {
+            $this->form_validation->set_message('checkRole', 'username is not activated');
             return false;
         }
 

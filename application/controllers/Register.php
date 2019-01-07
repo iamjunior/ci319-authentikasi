@@ -44,11 +44,24 @@ class Register extends CI_Controller {
 			$d['code']	= $this->register->confirmCode();
             $this->load->view('auth/register',$d);
         } else {
-            $this->register->insertRegister();
+            $this->register->put();
+            $id = $this->db->insert_id();
+            $this->register->getMail($id);
 			echo 'Yey Berhasil';
         }
 	}
-	
+    
+    public function konfirmasi(){
+        $getUser = $this->register->getUser(array('id_user'=>decrypt_my($this->uri->segment(2)),'status_user'=>'W'))->num_rows();
+        if($getUser){
+            if($this->register->confirm()){
+                echo 'Berhasil Di Aktifasi, Silahkan Login';
+            }
+        }else{
+                echo 'Tautan Kedaluarsa';
+        }
+
+    }
 	public function confirmCode()
 	{
 		if($this->input->post('confirm') != $this->register->confirmCode()) {
