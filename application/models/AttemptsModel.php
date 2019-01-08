@@ -13,20 +13,6 @@ class AttemptsModel extends CI_Model{
         3. Jika total_attempt >=2, ubah status_attempt = BLOCKED dan total_attempt +1
 
     */
-    function getFail1(){
-        $find = $this->find('OPEN')->first_row();
-        if($find->total_attempt >=2){
-            $this->db->where('id_attempt',$find->id_attempt);
-            $q = $this->db->update($this->_tb,array('total_attempt'=> $find->total_attempt+1,'status_attempt'=> 'BLOCKED','time_attempt'=>date('Y-m-d H:i:s')));
-        }elseif($find){
-            $this->db->where('id_attempt',$find->id_attempt);
-            $q = $this->db->update($this->_tb,array('total_attempt'=> $find->total_attempt+1,'time_attempt'=>date('Y-m-d H:i:s')));
-        }else{
-            $q = $this->Put();
-        }
-
-        return $q;
-    }
 
     function getFail(){
         if($this->find('BLOCKED')->first_row()){
@@ -51,41 +37,38 @@ class AttemptsModel extends CI_Model{
         2. Jika masih dalam masa blokir tetap mencoba login, update waktu sekarang
     */
     function getBlock(){
-        $find = $this->find('BLOCKED')->first_row();
-        if(!empty($find)){
+        if($this->find('BLOCKED')->first_row()){
+            $find = $this->find('BLOCKED')->first_row();
             $tglclose = (new DateTime($find->time_attempt))->modify("+1 minutes")->format("Y-m-d H:i:s");
             if(strtotime(date('Y-m-d H:i:s')) >= strtotime($tglclose)){
                 $this->db->where('id_attempt',$find->id_attempt);
                 $this->db->update($this->_tb,array('status_attempt'=> 'CLOSE'));
-                $q = 'Y';
+                $q = true;
             }else{
-                $this->db->where('id_attempt',$find->id_attempt);
-                $this->db->update($this->_tb,array('time_attempt'=> date('Y-m-d H:i:s')));
-                $q = 'N';
+                $q = false;
             }
         }else{
-            $q ='Y';
+            $q = true;
         }
         return $q;
     }
-
     /**
         Rule getSuccess
         1. Jika berhasil lakukan edit status_attempt yang tadinya OPEN/BLOCKED menjadi CLOSE
      */
     function getSuccess(){
-        $open   = $this->find('OPEN')->first_row();
-        $close  = $this->find('BLOCKED')->first_row();
-        if(!empty($open)){
+        if($this->find('OPEN')->first_row()){
+            $open   = $this->find('OPEN')->first_row();
             $this->db->where('id_attempt',$open->id_attempt);
             $this->db->update($this->_tb,array('status_attempt'=> 'CLOSE'));
-            $q = 'Y';
-        }elseif(!empty($close)){
+            $q = true;
+        }elseif($this->find('BLOCKED')->first_row()){
+            $close  = $this->find('BLOCKED')->first_row();
             $this->db->where('id_attempt',$close->id_attempt);
             $this->db->update($this->_tb,array('status_attempt'=> 'CLOSE'));
-            $q = 'Y';
+            $q = true;
         }else{
-            $q = 'Y';
+            $q = true;
         }
         return $q;
     }
@@ -104,7 +87,8 @@ class AttemptsModel extends CI_Model{
         $dtarray = array(
             'username'        => $this->input->post('username'),
             'time_attempt'    => date('Y-m-d H:i:s'),
-            'date_attempt'    => date('Y-m-d')
+            'date_attempt'    => date('Y-m-d'),
+            'total_attempt'   => '1'
         );
        return $this->db->insert($this->_tb,$dtarray);
     }

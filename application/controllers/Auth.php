@@ -44,6 +44,7 @@ class Auth extends CI_Controller {
         if ($this->form_validation->run() === false) {
             $this->load->view('auth/login');
         } else {
+            $this->attempt->getSuccess();
             $auth = $this->auth->getUser('username', $this->input->post('username'));
             
             $_SESSION['userId']     = encrypt_my($auth['id_user']);
@@ -127,25 +128,28 @@ class Auth extends CI_Controller {
     {
 		$user = $this->auth->getUser('username',$this->input->post('username'));
 
-        if(!$this->auth->checkPassword($user['username'], $password)) {
-            $this->form_validation->set_message('checkPassword', 'password is incorrect');
-            $this->attempt->getFail();//memanggail fungsi fail untuk blok user naantinya
-            return false;
+        if($user){
+            if($this->attempt->find('BLOCKED')->first_row()){
+                $this->form_validation->set_message('checkPassword', '');
+                return false;
+            }elseif(!$this->auth->checkPassword($user['username'], $password)) {
+                $this->form_validation->set_message('checkPassword', 'password is incorrect');
+                $this->attempt->getFail();//memanggail fungsi fail untuk blok user naantinya
+                return false;
+            }
         }
 
         return true;
 
     }
-    
+
     public function checkBlock()
     {
-        $find = $this->attempt->find('BLOCKED')->first_row();
-        
-        if ($find) {
+        $find = $this->attempt->getBlock();
+        if(empty($find)){
             $this->form_validation->set_message('checkBlock', 'username is blocked');
             return false;
         }
-
         return true;
     }
 

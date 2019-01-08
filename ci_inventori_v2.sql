@@ -11,7 +11,7 @@
  Target Server Version : 100132
  File Encoding         : 65001
 
- Date: 07/01/2019 20:56:08
+ Date: 08/01/2019 14:39:56
 */
 
 SET NAMES utf8mb4;
@@ -83,15 +83,15 @@ CREATE TABLE `tbu_attempt`  (
   `username` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `time_attempt` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
   `date_attempt` datetime(0) NULL DEFAULT NULL,
-  `total_attempt` int(11) NULL DEFAULT 0,
+  `total_attempt` int(11) NULL DEFAULT 1,
   `status_attempt` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT 'OPEN',
   PRIMARY KEY (`id_attempt`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbu_attempt
 -- ----------------------------
-INSERT INTO `tbu_attempt` VALUES (1, 'admin', '2019-01-07 20:09:30', '2019-01-07 00:00:00', 3, 'BLOCKED');
+INSERT INTO `tbu_attempt` VALUES (1, 'admin', '2019-01-08 14:35:20', '2019-01-08 00:00:00', 3, 'BLOCKED');
 
 -- ----------------------------
 -- Table structure for tbu_group
